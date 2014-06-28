@@ -5,6 +5,7 @@ struct Game { // struct is the same as class, but struct's are default to public
 	Game();
 	~Game();  // deconstructor
 private:
+	void eventLoop();
 };
 
 #endif // GAME_H_
