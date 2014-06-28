@@ -1,7 +1,8 @@
-#include "SDL.h"
+#include "SDL.h" // haven't used this yet
+#include "game.h"
 
 int main(int, char**){
-	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_Quit();
+	Game game;
+
 	return 0;
 }
