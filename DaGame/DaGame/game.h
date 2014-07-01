@@ -1,7 +1,10 @@
 #ifndef GAME_H_ // checks if the token has been defined earlier
 #define GAME_H_	// defines
 
-struct SDL_Surface;
+#include <boost/scoped_ptr.hpp>
+
+struct Sprite;
+struct Graphics;
 
 struct Game { // struct is the same as class, but struct's are default to public members while class is private, we want public
 	Game();
@@ -9,10 +12,9 @@ struct Game { // struct is the same as class, but struct's are default to public
 private:
 	void eventLoop();
 	void update();
-	void draw();
+	void draw(Graphics& graphics);
 
-	SDL_Surface* screen_; // declare the screen
-
+	boost::scoped_ptr<Sprite> sprite_;
 };
 
 #endif // GAME_H_

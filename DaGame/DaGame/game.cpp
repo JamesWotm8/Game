@@ -1,28 +1,28 @@
 #include "game.h"
 #include "SDL.h"
 #include <iostream>
+#include "graphics.h"
+#include "sprite.h"
 
 namespace{
-	const int sCREENWIDTH = 480;
-	const int sCREENHEIGHT = 640;
-	const int bITSPERPIXEL = 32;
 	const int fPS = 60;
 }
 
 Game::Game(){
 	SDL_Init(SDL_INIT_EVERYTHING); // initiate everything in SDL header
 	SDL_ShowCursor(SDL_DISABLE);
-	screen_ = SDL_SetVideoMode(sCREENHEIGHT, sCREENWIDTH, bITSPERPIXEL, SDL_RESIZABLE);
 	eventLoop(); // the infinite game loop
 }
 
 Game::~Game(){
-	SDL_FreeSurface(screen_); // free the screen 
 	SDL_Quit(); // restore all the resources that SDL was using to the original state
 }
 
 void Game::eventLoop() {
+	Graphics graphics; // initializes the graphics class, then at the end deconstructs.
 	SDL_Event event;
+
+	sprite_.reset(new Sprite("Images/MyChar.bmp", 0, 0, 32, 32));
 
 	bool running = true;
 	while (running) {  // this loop lasts 1/60th of a second which is the same as 1000/60ths ms
@@ -40,20 +40,18 @@ void Game::eventLoop() {
 		}
 
 		update();
-		draw();
+		draw(graphics);
 		const int elapsed_time_ms = SDL_GetTicks() - start_time_ms; // end of the loop time - start of the loop time = elapsed time
-		std::cout << "hey" + elapsed_time_ms;
+
 		SDL_Delay(1000/*ms*/ / fPS /* - elapsed_time_ms commented out because currently not working*/);
 	}
-
-	update();
-	draw();
 }
 
 void Game::update(){
 	// update() . move the player move projectiles check collisions
 }
 
-void Game::draw(){
-	// draw(). draw everything, background and stuff
+void Game::draw(Graphics& graphics){
+	sprite_->draw(graphics, 320, 240);
+	graphics.flip(); // draw(). draw everything, background and stuff
 }
