@@ -3,6 +3,7 @@
 #include <iostream>
 #include "graphics.h"
 #include "animated_sprite.h"
+#include "input.h"
 
 namespace{
 	const int fPS = 60;
@@ -22,24 +23,33 @@ Game::~Game(){
 
 void Game::eventLoop() {
 	Graphics graphics; // initializes the graphics class, then at the end deconstructs.
+	Input input; // include the input class
 	SDL_Event event;
 
 	sprite_.reset(new AnimatedSprite("Images/MyChar.bmp", 0, 0, kTileSize, kTileSize, 15, 3));
+
+
 
 	bool running = true;
 	int last_update_time = SDL_GetTicks();
 	while (running) {  // this loop lasts 1/60th of a second which is the same as 1000/60ths ms
 		const int start_time_ms = SDL_GetTicks(); // because it takes time for the whole loop to go through, we need to take into account the time it takes and take it away from the delay.
+		input.beginNewFrame(); // clear all maps
 		while (SDL_PollEvent(&event)){
 			switch (event.type){
 			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_ESCAPE){ // when esc is pressed, stop running 
-					running = false;
-				}
+				input.keyDownEvent(event); // instead of the if loop we used before, we can simply pass the event(the key) through to the input class
 				break; // break while loop
+			case SDL_KEYUP:
+				input.keyUpEvent(event);
+				break;
 			default:
 				break;
 			}
+		}
+
+		if (input.wasKeyPressed(SDLK_ESCAPE)){ // checks if escape was pressed, if so.. running = false and terminates program
+			running = false;
 		}
 		
 		const int current_time_ms = SDL_GetTicks();

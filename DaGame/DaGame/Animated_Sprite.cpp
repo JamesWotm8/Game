@@ -13,7 +13,7 @@ void AnimatedSprite::update(int elapsed_time_ms){
 	if (elapsed_time_ > frame_time_){
 		++current_frame_; // increment the current frame
 		elapsed_time_ = 0; // reset the elapsed time for the next frame
-		if (current_frame_ < num_frames_){ // update the frame
+		if (current_frame_ < num_frames_){ // update the frame or more simply put.. move the reference to the image 32 pixels to the left.
 			source_rect_.x += Game::kTileSize;
 		}
 		else{
