@@ -12,6 +12,8 @@ struct Graphics{
 
 	void flip();
 
+	void clear();
+
 private:
 	SDL_Surface* screen_;
 };
