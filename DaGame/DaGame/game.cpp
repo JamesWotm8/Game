@@ -2,7 +2,7 @@
 #include "SDL.h"
 #include <iostream>
 #include "graphics.h"
-#include "animated_sprite.h"
+#include "player.h"
 #include "input.h"
 
 namespace{
@@ -26,7 +26,7 @@ void Game::eventLoop() {
 	Input input; // include the input class
 	SDL_Event event;
 
-	sprite_.reset(new AnimatedSprite("Images/MyChar.bmp", 0, 0, kTileSize, kTileSize, 15, 3));
+	player_.reset(new Player(320, 240));
 
 
 
@@ -52,6 +52,18 @@ void Game::eventLoop() {
 			running = false;
 		}
 		
+		if (input.isKeyHeld(SDLK_LEFT) && input.isKeyHeld(SDLK_RIGHT)){
+			//here is where we stop moving because both are pressed
+			player_->stopMoving();
+		}else if(input.isKeyHeld(SDLK_LEFT)){
+			player_->startMovingLeft(); // moving left
+		}else if(input.isKeyHeld(SDLK_RIGHT)){
+			player_->startMovingRight(); // moving right
+		}else {
+			player_->stopMoving(); // else neither of the above are correct, stop moving.
+		}
+
+
 		const int current_time_ms = SDL_GetTicks();
 		update(current_time_ms - last_update_time);
 		last_update_time = current_time_ms;
@@ -65,10 +77,10 @@ void Game::eventLoop() {
 }
 
 void Game::update(int elapsed_time_ms){
-	sprite_->update(elapsed_time_ms);
+	player_->update(elapsed_time_ms);
 }
 
 void Game::draw(Graphics& graphics){
-	sprite_->draw(graphics, 320, 240);
+	player_->draw(graphics);
 	graphics.flip(); // draw(). draw everything, background and stuff
 }
