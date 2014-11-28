@@ -26,7 +26,7 @@ void Game::eventLoop() {
 	Input input; // include the input class
 	SDL_Event event;
 
-	player_.reset(new Player(320, 240));
+	player_.reset(new Player(graphics, 320, 240));
 
 
 
