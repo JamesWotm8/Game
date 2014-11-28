@@ -81,6 +81,7 @@ void Game::update(int elapsed_time_ms){
 }
 
 void Game::draw(Graphics& graphics){
+	graphics.clear();
 	player_->draw(graphics);
 	graphics.flip(); // draw(). draw everything, background and stuff
 }
